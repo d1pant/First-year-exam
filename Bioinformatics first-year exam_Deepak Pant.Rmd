@@ -1,0 +1,39 @@
+---
+title: "Covid-19 variants in California"
+author: 'Deepak (PID: A59010602)'
+date: "17/07/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Importing libraries
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(scales)
+```
+
+Loading dataset
+```{r}
+dataset = read.csv('covid19_variants.csv')
+dataset$date = as.Date(dataset$date)
+head(dataset,20)
+```
+
+Selecting for variants of interest
+```{r}
+dataset  = dataset%>%
+  filter(dataset$variant_name != 'Other' & dataset$variant_name != 'Total')
+```
+
+Plotting the data
+```{r}
+ggplot(dataset, aes(x=date, y=percentage, color=variant_name)) +
+  geom_line() + ggtitle("COVID-19 Variants in California") +
+  xlab("Date") + ylab("Percentage of Sequenced Specimens") + 
+  scale_x_date(labels = date_format("%Y-%m"))
+  
+```
+
